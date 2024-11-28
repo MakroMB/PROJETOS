@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex;">
+  <div class="informacoes">
+    <div class="titulo">
+      <h2> {{ nome }} {{ codigo }} </h2>
+      <h2> {{ professor }} </h2>
+    </div>
+    <div class="ementa">
+      <h4>Ementa</h4>
+      <p> {{ ementa }} </p>
+    </div>
+    <div class="horarios">
+      <h4>Horários disponíveis</h4>
+      {% for horario in horarios %}
+      <p>{{ horario }}</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="avalicao">
+    <div class="titulo">
+      <h2> Resumo das avaliações </h2>
+    </div>
+    <div class="notas" style="display: flex;">
+      <div class="media" style="align-items: center; padding: 8px;">
+        <h1> 4.2 </h1>
+      </div>
+      <div class="grafico">
+        <div class="star-rating-display">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+      </div>
+    </div>
+    <div class="comentarios">
+      <div class="usuario row">
+        <img src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png">
+        <p style="font-weight:500">Aluno</p>
+      </div>
+      <div class="texto">
+        A tecnologia tem sido um fator essencial na transformação das nossas vidas. Desde a comunicação até a educação, ela está presente em todos os pessoas…
+      </div>
+      <div class="usuario row">
+        <img src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png">
+        <p style="font-weight:500">Aluno</p>
+      </div>
+      <div class="texto">
+        A tecnologia tem sido um fator essencial na transformação das nossas vidas. Desde a comunicação até a educação, ela está presente em todos os pessoas…
+      </div>
+      <div class="usuario row">
+        <img src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png">
+        <p style="font-weight:500">Aluno</p>
+      </div>
+      <div class="texto">
+        A tecnologia tem sido um fator essencial na transformação das nossas vidas. Desde a comunicação até a educação, ela está presente em todos os pessoas…
+    </div>
+    </div>
+    <div class="compartilhar">
+      <div class="titulo" style="font-weight: 500;">
+        Avalie sua experiência
+      </div>
+      <button type="button" class="btn btn-secondary compartilhar-btn">Compartilhar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup do review -->
+<div class="popup-overlay">
+  <div class="popup-content">
+    <div class="popup-header">
+      <h3>Deixe sua avaliação</h3>
+      <button class="popup-close">&times;</button>
+    </div>
+    <form class="popup-form">
+      <div class="interactive-star-rating">
+        <span class="star" data-rating="1">★</span>
+        <span class="star" data-rating="2">★</span>
+        <span class="star" data-rating="3">★</span>
+        <span class="star" data-rating="4">★</span>
+        <span class="star" data-rating="5">★</span>
+      </div>
+      <input type="hidden" name="rating" id="selected-rating" value="0">
+      <input type="text" placeholder="Seu nome (opcional)" maxlength="50">
+      <textarea placeholder="Sua avaliação (máximo 300 caracteres)" maxlength="300"></textarea>
+      <div class="char-count">0 / 300</div>
+      <button type="submit" class="submit-review">Enviar Avaliação</button>
+    </form>
+  </div>
+</div>
+
+<style>
+  img{ 
+    width: 24px;
+    margin: 0px 8px 0px 16px;
+  }
+  p{
+    margin:0px;
+  }
+  .informacoes{
+    min-width: 50%;
+    padding: 20px;
+  }
+  .avalicao{
+    min-width: 50%;
+    background: #C3E0DF;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 16px;
+  }
+  .comentarios{
+    justify-content: center;
+  }
+  .informacoes .titulo{
+    min-height: 40%;
+  }
+  .informacoes .ementa{
+    min-height: 30%;
+    margin-bottom: 20px;
+  }
+  .informacoes .horarios{
+    min-height: 30%;
+    margin-bottom: 20px;
+  }
+
+  /* Sistema de estrelas css */
+  .star-rating-display .star, 
+  .interactive-star-rating .star {
+    color: #ddd;
+    font-size: 40px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .star-rating-display .star.active,
+  .interactive-star-rating .star.active {
+    color: gold;
+  }
+
+  /*css do popup*/
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .popup-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .interactive-star-rating {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .popup-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .popup-form input, 
+  .popup-form textarea {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .popup-form input::placeholder,
+  .popup-form textarea::placeholder {
+    color: #888;
+  }
+
+  .popup-form textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .char-count {
+    color: #888;
+    text-align: right;
+    font-size: 12px;
+  }
+
+  .submit-review {
+    background-color: #354d5e;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const compartilharBtn = document.querySelector('.compartilhar-btn');
+    const popupOverlay = document.querySelector('.popup-overlay');
+    const popupClose = document.querySelector('.popup-close');
+    const reviewTextarea = document.querySelector('.popup-form textarea');
+    const charCount = document.querySelector('.char-count');
+    const popupForm = document.querySelector('.popup-form');
+    const stars = document.querySelectorAll('.interactive-star-rating .star');
+    const ratingInput = document.getElementById('selected-rating');
+    const displayStars = document.querySelectorAll('.star-rating-display .star');
+    const ratingValue = 4.2; // o rating de display, dps colocar logica para media de rating pegando do banco
+
+    // mostrar estrela
+    function updateDisplayStars(rating) {
+        displayStars.forEach((star, index) => {
+            if (index < Math.floor(rating)) {
+                star.classList.add('active');
+            } else if (index === Math.floor(rating) && rating % 1 !== 0) {
+                // Preencher parcialmente a prox estrela com os decimos tipo .2 de 4.2
+                star.classList.add('active');
+                star.style.background = `linear-gradient(to right, gold ${(rating % 1) * 100}%, #ddd ${(rating % 1) * 100}%)`;
+                star.style.webkitBackgroundClip = 'text';
+                star.style.webkitTextFillColor = 'transparent';
+            } else {
+                star.classList.remove('active');
+                star.style.background = 'none';
+            }
+        });
+    }
+
+    // Display inicial
+    updateDisplayStars(ratingValue);
+
+    // Interacao de avaliacao das estrelas
+    stars.forEach(star => {
+      star.addEventListener('mouseover', function() {
+        const rating = this.getAttribute('data-rating');
+        stars.forEach((s, index) => {
+          if (index < rating) {
+            s.classList.add('active');
+          } else {
+            s.classList.remove('active');
+          }
+        });
+      });
+
+      star.addEventListener('click', function() {
+        const rating = this.getAttribute('data-rating');
+        ratingInput.value = rating;
+        stars.forEach((s, index) => {
+          if (index < rating) {
+            s.classList.add('active');
+          } else {
+            s.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // popup reseta quando o mouse sair
+    document.querySelector('.interactive-star-rating').addEventListener('mouseleave', function() {
+      stars.forEach((s, index) => {
+        if (index < ratingInput.value) {
+          s.classList.add('active');
+        } else {
+          s.classList.remove('active');
+        }
+      });
+    });
+
+    // abrir popup
+    compartilharBtn.addEventListener('click', function() {
+      popupOverlay.style.display = 'flex';
+    });
+
+    // fechar popup
+    popupClose.addEventListener('click', function() {
+      popupOverlay.style.display = 'none';
+    });
+
+    // fechar popup quando clicar fora
+    popupOverlay.addEventListener('click', function(e) {
+      if (e.target === popupOverlay) {
+        popupOverlay.style.display = 'none';
+      }
+    });
+
+    //contador de caractere da review
+    reviewTextarea.addEventListener('input', function() {
+      const currentLength = this.value.length;
+      charCount.textContent = `${currentLength} / 300`;
+    });
+
+    // Submissao de formulario(mudar dps para adequar se nescessario)
+    popupForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.querySelector('.popup-form input[type="text"]').value;
+      const review = reviewTextarea.value;
+      const rating = ratingInput.value;
+
+      if (review.trim() !== '' && rating > 0) {
+        // colocar aqui pra enviar review para o banco
+        console.log('Name:', name);
+        console.log('Rating:', rating);
+        console.log('Review:', review);
+        alert('Avaliação enviada com sucesso!');
+        popupOverlay.style.display = 'none';
+      } else {
+        alert('Por favor, dê uma nota e escreva sua avaliação');
+      }
+    });
+  });
+</script>
+{% endblock %}

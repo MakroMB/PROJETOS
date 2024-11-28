@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        /* Main title styling */
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin: 2rem 0;
+            font-weight: bold;
+        }
+
+        /* Form container styling */
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Input fields styling */
+        input[type="text"] {
+            width: 200px;
+            padding: 8px 12px;
+            margin: 0 10px 15px 0;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        /* Dropdown button group styling */
+        .btn-group {
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        /* Filter button styling */
+        .filter-btn {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Dropdown menu styling */
+        .dropdown-menu {
+            padding: 15px !important;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        /* Labels styling */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        /* Results section styling */
+        h3 {
+            margin: 2rem 0 1rem;
+            color: #2c3e50;
+        }
+
+        /* Table styling */
+        .table {
+            margin-top: 1rem;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* View Details Button styling */
+        .btn-view-details {
+            background-color: #6c757d;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            border: none;
+            margin: 2px 0;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-view-details:hover {
+            background-color: #5a6268;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Schedule cell styling */
+        .schedule-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 0;
+        }
+
+        .schedule-time {
+            margin-right: 10px;
+            flex: 1;
+        }
+
+        /* No results message styling */
+        h4 {
+            text-align: center;
+            color: #6c757d;
+            margin: 2rem 0;
+        }
+
+        /* Submit button styling */
+        .btn-primary {
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            input[type="text"] {
+                width: 100%;
+                margin-right: 0;
+            }
+            
+            .btn-group {
+                display: block;
+                margin: 10px 0;
+            }
+            
+            .dropdown-menu {
+                width: 100% !important;
+            }
+
+            .schedule-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-view-details {
+                width: 100%;
+                text-align: center;
+                margin-top: 5px;
+            }
+        }
+    </style>
+
+    <h1>Busca de Disciplinas</h1>
+    
+    <form action="{% url 'consultar' %}" method="POST">
+        {% csrf_token %}
+        
+        <input type="text" name="codigo" placeholder="Código">
+        <input type="text" name="nome" placeholder="Disciplina">
+        <input type="text" name="professor" placeholder="Professor">
+        
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary dropdown-toggle filter-btn" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                &#x1F9EA; Filtros
+            </button>
+            
+            <div class="container text-center">
+                <div class="row justify-content-start">
+                    <ul class="dropdown-menu dropdown-menu-lg-end p-3" style="width: 300px;">
+                        <div class="row">
+                            <div class="col">
+                                <label><Strong>Dia: </Strong></label>
+                                <li><input type="checkbox" name="dia" value="SEG"> Segunda</li>
+                                <li><input type="checkbox" name="dia" value="TER"> Terça</li>
+                                <li><input type="checkbox" name="dia" value="QUA"> Quarta</li>
+                                <li><input type="checkbox" name="dia" value="QUI"> Quinta</li>
+                                <li><input type="checkbox" name="dia" value="SEX"> Sexta</li>
+                            </div>
+                            
+                            <div class="col">
+                                <label><strong>Horário:</strong></label>
+                                <li><input type="checkbox" name="horario" value="07-"> 7h</li>
+                                <li><input type="checkbox" name="horario" value="09-"> 9h</li>
+                                <li><input type="checkbox" name="horario" value="11-"> 11h</li>
+                                <li><input type="checkbox" name="horario" value="13-"> 13h</li>
+                                <li><input type="checkbox" name="horario" value="15-"> 15h</li>
+                                <li><input type="checkbox" name="horario" value="17-"> 17h</li>
+                                <li><input type="checkbox" name="horario" value="18-"> 18h</li>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Consultar</button>
+    </form>
+
+    {% if resultado %}
+    <h3>Resultado</h3>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Matéria</th>
+                <th scope="col">Professor</th>
+                <th scope="col">Horários</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for chave, horarios in resultado.items %}
+            <tr>
+                <td class="align-middle">{{ chave.0 }}</td>
+                <td class="align-middle">{{ chave.1 }}</td>
+                <td class="align-middle">{{ chave.2 }}</td>
+                <td class="schedule-cell">
+                    {% for horario in horarios %}
+                    <div class="schedule-item">
+                        <span class="schedule-time">{{ horario }}</span>
+                        <a href="{% url 'disciplina' chave.0 chave.2 %}" class="btn-view-details">Ver Detalhes</a>
+                    </div>
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% elif resultado == None %}
+    {% else %}
+    <h4>Nenhum resultado encontrado.</h4>
+    {% endif %}
+{% endblock %}
